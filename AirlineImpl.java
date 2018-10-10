@@ -1,13 +1,14 @@
+import java.io.Serializable;
 import java.rmi.*;
 import java.rmi.server.*;
 import java.rmi.registry.*;
 import java.util.*;
 import java.sql.*;
 
-public class AirlineImpl extends UnicastRemoteObject implements AirlineInterface
+public class AirlineImpl extends UnicastRemoteObject implements AirlineInterface, Serializable
 {
 	Connection conn;
-
+        ArrayList<Flight_details> send=new ArrayList<Flight_details>();
 	// Server Constructor
 	public AirlineImpl() throws RemoteException
 	{
@@ -16,7 +17,7 @@ public class AirlineImpl extends UnicastRemoteObject implements AirlineInterface
 	}
 
 	// The bookSeat() method.
-	public int bookSeat(String dept, String land)
+	public ArrayList<Flight_details> bookSeat(String dept, String land)
 	{
 		int seatdtls=0;
 		// System.out.println("Flight is " + FlightNo);
@@ -27,27 +28,25 @@ public class AirlineImpl extends UnicastRemoteObject implements AirlineInterface
 			Class.forName("com.mysql.jdbc.Driver");
 			String url = "jdbc:mysql://localhost:3306/flightsData";
 			// Pass the static fields containing the data source name
-			conn = DriverManager.getConnection(url,"root","32232665");
+			conn = DriverManager.getConnection(url,"root","ragz");
 
 			Statement stmt = conn.createStatement();
-			ResultSet rs= stmt.executeQuery("Select Seats from Flights where TakeOff ='" +dept+ "' and Land = '"+land+"'");
-
+			ResultSet rs= stmt.executeQuery("Select * from Flights where TakeOff ='" +dept+ "' and Land = '"+land+"'");
 			while (rs.next())
 			{
-				seatdtls = rs.getInt("Seats");
+                              
+                              send.add(new Flight_details(rs.getString("Airline"),rs.getTime("DeptTime"),rs.getTime("ArrTime"),rs.getInt("FlightNo"),rs.getInt("seats")));
 			}
-      System.out.println("seats="+seatdtls);
+     
 		}
 
 		catch(Exception excp) {
 			excp.printStackTrace();
     }
 
-		if (seatdtls > 0 )
-			return seatdtls;
-		else
-			return 0;
+		return send;
 	}  //End of bookSeat() method
 
 	// Implement the main() method
 } // End of Server class
+

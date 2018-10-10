@@ -12,6 +12,7 @@ import java.rmi.*;
 import java.rmi.registry.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -219,17 +220,23 @@ public class AirlineClient extends javax.swing.JFrame {
 	{
 		int val;
         	try {
-                    String ServerURL = "rmi://192.168.43.130/AirlineServer";
+                    String ServerURL = "rmi://192.168.180.1/AirlineServer";
 			AirlineInterface alIntf = (AirlineInterface)Naming.lookup(ServerURL);
-			val = alIntf.bookSeat(source,dest);
+			ArrayList<Flight_details> display = alIntf.bookSeat(source,dest);
 
-			if (val == 0)
+			if (display == null)
 			{
                             JOptionPane.showMessageDialog(null,"No seats available");
 			}
 			else
 			{
-                            JOptionPane.showMessageDialog(null, "No. of seats available: "+val);
+                            //System.out.println("Hello");
+                            //System.out.println(display.get(0).seats);
+                            
+                            DisplayingPage vp =new DisplayingPage();
+                            vp.setVisible(true);
+                            vp.show_user(display);
+                            dispose();
 			}
 		}
 
