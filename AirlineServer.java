@@ -7,7 +7,7 @@ import java.rmi.registry.Registry;
 public class AirlineServer{
   public static void main(String args[]){
     try{
-        System.setProperty("java.rmi.server.hostname","192.168.180.1");
+        System.setProperty("java.rmi.server.hostname","192.168.43.141");
       // create an instance of the Server object to export
       AirlineImpl arlnServer = new AirlineImpl();
       Registry r = java.rmi.registry.LocateRegistry.createRegistry(1099);//1099 is the port number
@@ -19,7 +19,7 @@ public class AirlineServer{
     } // End of try block
 
     catch (RemoteException RemotExcp){
-      System.out.println("Remote Server Error: " + RemotExcp.getMessage());
+      RemotExcp.printStackTrace();
       System.exit(0);
     }
 

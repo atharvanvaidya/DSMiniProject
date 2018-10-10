@@ -220,7 +220,7 @@ public class AirlineClient extends javax.swing.JFrame {
 	{
 		int val;
         	try {
-                    String ServerURL = "rmi://192.168.180.1/AirlineServer";
+                    String ServerURL = "rmi://192.168.43.141/AirlineServer";
 			AirlineInterface alIntf = (AirlineInterface)Naming.lookup(ServerURL);
 			ArrayList<Flight_details> display = alIntf.bookSeat(source,dest);
 
@@ -230,13 +230,16 @@ public class AirlineClient extends javax.swing.JFrame {
 			}
 			else
 			{
-                            //System.out.println("Hello");
-                            //System.out.println(display.get(0).seats);
-                            
-                            DisplayingPage vp =new DisplayingPage();
-                            vp.setVisible(true);
-                            vp.show_user(display);
+                         
+                            //DispTable vp =new DispTable(display);
+                            //vp.setVisible(true);
+                            DisplayPage dp=new DisplayPage();
+                            dp.show_user(display);
+                            dp.setVisible(true);
                             dispose();
+                            Booking b=new Booking();
+                            b.setVisible(true);
+                            
 			}
 		}
 
